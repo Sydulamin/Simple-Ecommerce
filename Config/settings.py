@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-02@%2utg#xt$2a4u=36h(3w5s4j(4*_(1h2qb902(_4443fng$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,6 +49,7 @@ AUTH_USER_MODEL = 'account.Custom_User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,19 +81,27 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#   'default': {
+#     'ENGINE': 'django.db.backends.postgresql',
+#     'NAME': 'neondb',
+#     'USER': 'neondb_owner',
+#     'PASSWORD': 'npg_6ew7mVgXjCdn' ,
+#     'HOST': 'ep-late-feather-a1t26xd3-pooler.ap-southeast-1.aws.neon.tech',
+#     'PORT': '5432',
+#     'OPTIONS': {
+#       'sslmode': 'require',
+#     },
+#     'DISABLE_SERVER_SIDE_CURSORS': True,
+#   }
+# }
+
 DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'neondb',
-    'USER': 'neondb_owner',
-    'PASSWORD': 'npg_6ew7mVgXjCdn' ,
-    'HOST': 'ep-late-feather-a1t26xd3-pooler.ap-southeast-1.aws.neon.tech',
-    'PORT': '5432',
-    'OPTIONS': {
-      'sslmode': 'require',
-    },
-    'DISABLE_SERVER_SIDE_CURSORS': True,
-  }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
@@ -127,11 +139,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = '/static/'
+
+# This production code might break development mode, so we check whether we're in DEBUG mode
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
