@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %} Login & Registration {% endblock %}
+
+{% block body %}
+
+<div class="login-register-area pt-100px pb-100px">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+        <div class="login-register-wrapper">
+          <div class="login-register-tab-list nav">
+            <a class="active" data-bs-toggle="tab" href="#lg1">
+              <h4>login</h4>
+            </a>
+            <a data-bs-toggle="tab" href="#lg2">
+              <h4>register</h4>
+            </a>
+          </div>
+          <div class="tab-content">
+            <div id="lg1" class="tab-pane active">
+              <div class="login-form-container">
+                <div class="login-register-form">
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                  {% endfor %}
+                  {% endif %}
+
+                  <form method="POST" action="{% url 'login_user' %}">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Username" />
+                    <input type="password" name="password" placeholder="Password" />
+                    <div class="button-box">
+                      <div class="login-toggle-btn">
+                        <input type="checkbox" />
+                        <a class="flote-none" href="javascript:void(0)">Remember me</a>
+                        <a href="{% url 'Forget_pass' %}">Forgot Password?</a>
+                      </div>
+                      <button type="submit"><span>Login</span></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div id="lg2" class="tab-pane">
+              <div class="login-form-container">
+                <div class="login-register-form">
+                  <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+
+                    <!-- Django Default Fields -->
+                    <div class="mb-3">
+                      <label class="form-label">Username</label>
+                      <input type="text" class="form-control" name="username" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">First Name</label>
+                      <input type="text" name="first_name" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Last Name</label>
+                      <input type="text" class="form-control" name="last_name">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-control" name="email" required>
+                    </div>
+
+                    <!-- Custom Fields -->
+                    <div class="mb-3">
+                      <label class="form-label">Phone</label>
+                      <input type="text" class="form-control" name="phone" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Address</label>
+                      <input type="text" class="form-control" name="address">
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city">
+                      </div>
+                      <div class="col">
+                        <label class="form-label">State</label>
+                        <input type="text" class="form-control" name="state">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" name="country">
+                      </div>
+                      <div class="col">
+                        <label class="form-label">Zip Code</label>
+                        <input type="text" class="form-control" name="zip_code">
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Profile Image</label>
+                      <input type="file" class="form-control" name="image">
+                    </div>
+
+                    <!-- Password Fields -->
+                    <div class="mb-3">
+                      <label class="form-label">Password</label>
+                      <input type="password" class="form-control" name="password1" required>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Confirm Password</label>
+                      <input type="password" class="form-control" name="password2" required>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="button-box">
+                      <button type="submit"><span>Register</span></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
