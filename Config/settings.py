@@ -81,28 +81,28 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql',
-#     'NAME': 'neondb',
-#     'USER': 'neondb_owner',
-#     'PASSWORD': 'npg_6ew7mVgXjCdn' ,
-#     'HOST': 'ep-late-feather-a1t26xd3-pooler.ap-southeast-1.aws.neon.tech',
-#     'PORT': '5432',
-#     'OPTIONS': {
-#       'sslmode': 'require',
-#     },
-#     'DISABLE_SERVER_SIDE_CURSORS': True,
-#   }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'neondb',
+    'USER': 'neondb_owner',
+    'PASSWORD': 'npg_6ew7mVgXjCdn' ,
+    'HOST': 'ep-late-feather-a1t26xd3-pooler.ap-southeast-1.aws.neon.tech',
+    'PORT': '5432',
+    'OPTIONS': {
+      'sslmode': 'require',
+    },
+    'DISABLE_SERVER_SIDE_CURSORS': True,
+  }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL'),
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 
 
 # Password validation
